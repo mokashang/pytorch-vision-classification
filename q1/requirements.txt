@@ -1,0 +1,6 @@
+torch==2.1.0
+matplotlib==3.8.0
+h5py
+numpy
+seaborn
+scikit-learn
