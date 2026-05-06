@@ -1,49 +1,58 @@
-# EE541 Homework 8
+# PyTorch Vision Classification Suite
 
-**Name:** Mengjia Shang
-**Student ID:** 7338151449
+Three small PyTorch classifiers covering the progression from a one-layer
+logistic baseline to a regularized MLP on a harder dataset:
 
-## Description
+1. **`mnist_logistic/`** — single-layer logistic classifier on MNIST. A
+   from-scratch `torch.utils.data.Dataset` that reads MNIST out of HDF5,
+   SGD training with L2 weight decay, train/test log-loss and accuracy
+   curves, and a normalized confusion-matrix heatmap.
 
-This submission implements three deep learning classification tasks using PyTorch.
+2. **`fashion_mnist_regularization/`** — two MLPs on Fashion-MNIST trained
+   for 40 epochs each:
+   - **Model 1** — 784→128→10, no regularization.
+   - **Model 2** — 784→48→10, L2 weight decay + dropout.
+   The notebook plots per-layer weight histograms for each model and
+   discusses how dropout + weight decay tighten the weight distribution.
 
----
+3. **`cifar10_mlp/`** — a flat MLP (3072→256→128→10) on CIFAR-10 with
+   dropout, L2 weight decay, and ReLU. The notebook reports the
+   confusion matrix on the test split and a short discussion of why an
+   MLP plateaus on CIFAR-10 (it has no spatial inductive bias —
+   convolutional architectures dominate).
 
-## q1 — Logistic Classifier on MNIST
+## Layout
 
-Files:
-- `q1.ipynb` — custom HDF5 dataset, single-layer logistic classifier, SGD training with L2 regularization, learning curves, confusion matrix
-- `requirements.txt`
-- `learning_curves.pdf` — train/test log-loss and accuracy vs. epochs
-- `confusion_matrix.pdf` — normalized confusion matrix heatmap
+```
+mnist_logistic/
+  mnist_logistic.ipynb
+  requirements.txt
+fashion_mnist_regularization/
+  fashion_mnist_regularization.ipynb
+  requirements.txt
+cifar10_mlp/
+  cifar10_mlp.ipynb
+  requirements.txt
+```
 
-Data files (at repo root): `mnist_traindata.hdf5`, `mnist_testdata.hdf5`
+## Data
 
----
+- **MNIST** for `mnist_logistic/` — expects `mnist_traindata.hdf5` and
+  `mnist_testdata.hdf5` at the repo root (the notebook also looks in the
+  current directory).
+- **Fashion-MNIST** and **CIFAR-10** are pulled automatically by
+  `torchvision.datasets`.
 
-## q2 — Regularization and Dropout on Fashion MNIST
+## Running
 
-Files:
-- `q2.ipynb` — two MLP models trained for 40 epochs, weight histograms, analysis of weight distributions
-- `requirements.txt`
-- `model1_weights.pdf` — histograms for Model 1 (128 nodes, no regularization)
-- `model2_weights.pdf` — histograms for Model 2 (48 nodes, L2 + dropout)
+Each module is independent. Pick one and install its requirements:
 
----
+```bash
+pip install -r mnist_logistic/requirements.txt
+jupyter notebook mnist_logistic/mnist_logistic.ipynb
+```
 
-## q3 — CIFAR-10 Classification
+## Stack
 
-Files:
-- `q3.ipynb` — MLP (3072→256→128→10) with dropout and L2 regularization, confusion matrix, answers to questions
-- `requirements.txt`
-- `confusion_matrix.pdf` — normalized confusion matrix heatmap
-
----
-
-## Dependencies
-
-See `requirements.txt` in each problem directory. Main dependencies:
-- `torch==2.1.0`
-- `torchvision`
-- `matplotlib==3.8.0`
-- `h5py`, `numpy`, `seaborn`, `scikit-learn`
+`torch==2.1.0`, `torchvision`, `matplotlib==3.8.0`, `h5py`, `numpy`,
+`seaborn`, `scikit-learn`.
